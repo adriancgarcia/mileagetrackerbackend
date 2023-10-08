@@ -62,6 +62,16 @@ def get_trips():
     # Return the results as json
     return jsonify(results), 200
 
+# SHOW ROUTE
+@app.route("/trips/<int:trip_id>", methods=["GET"])
+def show_trip(trip_id):
+    query = "SELECT * FROM trip WHERE id = %s;"
+    result = run_query(query, [trip_id])
+    if not result:
+        return jsonify({"error": "Trip not found"}), 404
+    # COnvert result into dictionary (id, tripname, tripdate, startmileage, endmileage, costpermile)
+    result = [{'id': result[0]['id'], 'tripname': result[0]['tripname'], 'tripdate': result[0]['tripdate'], 'startmileage': result[0]['startmileage'], 'endmileage': result[0]['endmileage'], 'costpermile': result[0]['costpermile']}]
+    return jsonify(result) 
 
 # start the server
 if __name__ == "__main__":
