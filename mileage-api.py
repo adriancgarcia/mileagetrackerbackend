@@ -73,6 +73,21 @@ def show_trip(trip_id):
     result = [{'id': result[0]['id'], 'tripname': result[0]['tripname'], 'tripdate': result[0]['tripdate'], 'startmileage': result[0]['startmileage'], 'endmileage': result[0]['endmileage'], 'costpermile': result[0]['costpermile']}]
     return jsonify(result) 
 
+# Update route
+@app.route("/trips/<int:trip_id>", methods=["PUT"])
+def update_trip(trip_id):
+    data = request.get_json()
+    query = "UPDATE trip SET tripname = %s, tripdate = %s, startmileage = %s, endmileage = %s, costpermile = %s WHERE id= %s;" 
+    run_query(query, [data["tripname"], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"], trip_id])
+    return jsonify({"message": "Trip updated successfully"})
+
+# DELETE ROUTE
+@app.route('/trips/<int:trip_id>', methods=['DELETE'])
+def delete_trip(trip_id):
+    query = "DELETE FROM trip WHERE id = %s;"
+    run_query(query, [trip_id])
+    return jsonify({"message": "Trip deleted successfully"})
+
 # start the server
 if __name__ == "__main__":
     
