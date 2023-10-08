@@ -1,6 +1,6 @@
 # import OS (allows to access env variables)
 import os
-# import psycopg2 (allows to connect to Postgres)
+# import psycopg2 (allows to connect to Postgres)source
 import psycopg2
 # Import DictCursor (allows to access data by column name)
 from psycopg2.extras import DictCursor
@@ -24,3 +24,5 @@ def run_query(sql, params=None):
                 return cur.fetchall()
             else:
                 None
+
+

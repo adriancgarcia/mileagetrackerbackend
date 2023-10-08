@@ -20,17 +20,17 @@ app = Flask(__name__)
 def create_table():
     # define the query as a string
     create_table_query = """
-        CREATE TABLE OF NOT EXISTS trip (
+        CREATE TABLE IF NOT EXISTS trip(
         id SERIAL PRIMARY KEY,
         tripname VARCHAR NOT NULL,
         tripdate VARCHAR NOT NULL,
         startmileage INT NOT NULL,
         endmileage INT NOT NULL,
         costpermile FLOAT NOT NULL
-    );
-    """
+        );
+        """
 
-    # Run the create teable query
+    # Run the create table query
     run_query(create_table_query)
 
 # Run the create_table function
@@ -39,13 +39,31 @@ create_table()
 # create Route (CreateTrip)
 @app.route('/trips', methods=['POST'])
 def create_trip():
-    #get teh data from the rquest (json body)
+    #get the data from the rquest (json body)
     data = request.get_json()
     # write SQL query
     query = 'INSERT INTO trip (tripname, tripdate, startmileage, endmileage, costpermile) VALUES (%s, %s, %s, %s, %s) RETURNING id;'
 
-    # Runt he query and get back results
+    # Run the query and get back results
     result = run_query(query, [data['tripname'], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"]])
     # Return the ID to confirm it was created
     return jsonify({"id": result[0]["id"]}), 201
 
+# index Route
+@app.route('/trips', methods=['GET'])
+def get_trips():
+    #Query String
+    query = 'SELECT * FROM trip;'
+    # Run the query and get back results
+    results = run_query(query)
+    # Turn the results into an array of dictionaries
+    # Loop up list or dictionary comprehension
+    results = [{'id': result['id'], 'tripname': result['tripname'], 'tripdate': result['tripdate'], 'startmileage': result['startmileage'], 'endmileage': result['endmileage'], 'costpermile': result['costpermile']} for result in results]
+    # Return the results as json
+    return jsonify(results), 200
+
+
+# start the server
+if __name__ == "__main__":
+    
+    app.run(debug=True, port=3000)
