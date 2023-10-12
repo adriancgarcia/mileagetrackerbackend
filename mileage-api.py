@@ -2,19 +2,21 @@
 # Flask to create app object
 # request to access request object
 # jsonify to convert data to JSON
-from flask import Flask, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify
 # Import os to access env vars
 import os
 # import load_dotenv to load env vars from .env
 from dotenv import load_dotenv
 ## import the run_query function from sql.py
 from sql import run_query
+from flask_cors import CORS
 
 # load env variables
 load_dotenv()
 
 # create an app object
 app = Flask(__name__)
+CORS(app)
 
 # create a function to create our table
 def create_table():
@@ -26,7 +28,8 @@ def create_table():
         tripdate VARCHAR NOT NULL,
         startmileage INT NOT NULL,
         endmileage INT NOT NULL,
-        costpermile FLOAT NOT NULL
+        costpermile FLOAT NOT NULL,
+        amountmade FLOAT not NULL
         );
         """
 
@@ -35,6 +38,11 @@ def create_table():
 
 # Run the create_table function
 create_table()
+
+@app.route('/')
+def client():
+    return send_from_directory('mileagetracker/lib', 'index.html')
+
 
 # create Route (CreateTrip)
 @app.route('/trips', methods=['POST'])
