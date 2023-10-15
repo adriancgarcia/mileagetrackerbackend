@@ -2,7 +2,7 @@
 
 - **Project Name:** Mileage Tracker
 - **Project By:** Adrian Garcia
-- [**Link To  Frontend GITHUB**](https://github.com/adriancgarcia/mileagetrackerfrontend)
+- [**Link To  Frontend GITHUB**](https://github.com/adriancgarcia/mileagetracker)
 - [**LINK TO DEPLOYED WEBSITE**]()
 - **List of technologies used** Python, Javascript
 - [**Link to Trello**]()

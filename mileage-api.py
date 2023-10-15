@@ -28,8 +28,7 @@ def create_table():
         tripdate VARCHAR NOT NULL,
         startmileage INT NOT NULL,
         endmileage INT NOT NULL,
-        costpermile FLOAT NOT NULL,
-        amountmade FLOAT not NULL
+        costpermile FLOAT NOT NULL
         );
         """
 
@@ -41,7 +40,7 @@ create_table()
 
 @app.route('/')
 def client():
-    return send_from_directory('mileagetracker/lib', 'index.html')
+    return send_from_directory('mileagetracker/src', 'index.html')
 
 
 # create Route (CreateTrip)
