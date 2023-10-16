@@ -50,12 +50,12 @@ def create_trip():
     #get the data from the rquest (json body)
     data = request.get_json()
     # write SQL query
-    query = 'INSERT INTO trip (tripname, tripdate, startmileage, endmileage, costpermile, reimbursement) VALUES (%s, %s, %s, %s, %s) RETURNING id;'
+    query = 'INSERT INTO trip (tripname, tripdate, startmileage, endmileage, costpermile, reimbursement) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id;'
 
     # Run the query and get back results
-    result = run_query(query, [data['tripname'], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"], data["reimbursement"]])
+    result = run_query(query, [data['tripname'], data['tripdate'], data['startmileage'], data['endmileage'], data['costpermile'], data['reimbursement']])
     # Return the ID to confirm it was created
-    return jsonify({"id": result[0]["id"]}), 201
+    return jsonify({'id': result[0]['id']}), 201
 
 # index Route
 @app.route('/trips', methods=['GET'])
@@ -71,30 +71,30 @@ def get_trips():
     return jsonify(results), 200
 
 # SHOW ROUTE
-@app.route("/trips/<int:trip_id>", methods=["GET"])
+@app.route('/trips/<int:trip_id>', methods=['GET'])
 def show_trip(trip_id):
-    query = "SELECT * FROM trip WHERE id = %s;"
+    query = 'SELECT * FROM trip WHERE id = %s;'
     result = run_query(query, [trip_id])
     if not result:
-        return jsonify({"error": "Trip not found"}), 404
+        return jsonify({'error': 'Trip not found'}), 404
     # COnvert result into dictionary (id, tripname, tripdate, startmileage, endmileage, costpermile)
     result = [{'id': result[0]['id'], 'tripname': result[0]['tripname'], 'tripdate': result[0]['tripdate'], 'startmileage': result[0]['startmileage'], 'endmileage': result[0]['endmileage'], 'costpermile': result[0]['costpermile'], 'reimbursement': result[0]['reimbursement']}]
     return jsonify(result) 
 
 # Update route
-@app.route("/trips/<int:trip_id>", methods=["PUT"])
+@app.route('/trips/<int:trip_id>', methods=['PUT'])
 def update_trip(trip_id):
     data = request.get_json()
-    query = "UPDATE trip SET tripname = %s, tripdate = %s, startmileage = %s, endmileage = %s, costpermile = %s, reimbursement =%s WHERE id= %s;" 
-    run_query(query, [data["tripname"], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"], data["reimbursement"], trip_id])
-    return jsonify({"message": "Trip updated successfully"})
+    query = 'UPDATE trip SET tripname = %s, tripdate = %s, startmileage = %s, endmileage = %s, costpermile = %s, reimbursement = %s WHERE id = %s;' 
+    run_query(query, [data['tripname'], data['tripdate'], data['startmileage'], data['endmileage'], data['costpermile'], data['reimbursement'], trip_id])
+    return jsonify({'message': 'Trip updated successfully'})
 
 # DELETE ROUTE
 @app.route('/trips/<int:trip_id>', methods=['DELETE'])
 def delete_trip(trip_id):
-    query = "DELETE FROM trip WHERE id = %s;"
+    query = 'DELETE FROM trip WHERE id = %s;'
     run_query(query, [trip_id])
-    return jsonify({"message": "Trip deleted successfully"})
+    return jsonify({'message': 'Trip deleted successfully'})
 
 # start the server
 if __name__ == "__main__":
