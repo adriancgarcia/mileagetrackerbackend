@@ -28,7 +28,8 @@ def create_table():
         tripdate VARCHAR NOT NULL,
         startmileage INT NOT NULL,
         endmileage INT NOT NULL,
-        costpermile FLOAT NOT NULL
+        costpermile FLOAT NOT NULL,
+        reimbursement FLOAT NOT NULL
         );
         """
 
@@ -49,10 +50,10 @@ def create_trip():
     #get the data from the rquest (json body)
     data = request.get_json()
     # write SQL query
-    query = 'INSERT INTO trip (tripname, tripdate, startmileage, endmileage, costpermile) VALUES (%s, %s, %s, %s, %s) RETURNING id;'
+    query = 'INSERT INTO trip (tripname, tripdate, startmileage, endmileage, costpermile, reimbursement) VALUES (%s, %s, %s, %s, %s) RETURNING id;'
 
     # Run the query and get back results
-    result = run_query(query, [data['tripname'], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"]])
+    result = run_query(query, [data['tripname'], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"], data["reimbursement"]])
     # Return the ID to confirm it was created
     return jsonify({"id": result[0]["id"]}), 201
 
@@ -65,7 +66,7 @@ def get_trips():
     results = run_query(query)
     # Turn the results into an array of dictionaries
     # Loop up list or dictionary comprehension
-    results = [{'id': result['id'], 'tripname': result['tripname'], 'tripdate': result['tripdate'], 'startmileage': result['startmileage'], 'endmileage': result['endmileage'], 'costpermile': result['costpermile']} for result in results]
+    results = [{'id': result['id'], 'tripname': result['tripname'], 'tripdate': result['tripdate'], 'startmileage': result['startmileage'], 'endmileage': result['endmileage'], 'costpermile': result['costpermile'], 'reimbursement': result['reimbursement']} for result in results]
     # Return the results as json
     return jsonify(results), 200
 
@@ -77,15 +78,15 @@ def show_trip(trip_id):
     if not result:
         return jsonify({"error": "Trip not found"}), 404
     # COnvert result into dictionary (id, tripname, tripdate, startmileage, endmileage, costpermile)
-    result = [{'id': result[0]['id'], 'tripname': result[0]['tripname'], 'tripdate': result[0]['tripdate'], 'startmileage': result[0]['startmileage'], 'endmileage': result[0]['endmileage'], 'costpermile': result[0]['costpermile']}]
+    result = [{'id': result[0]['id'], 'tripname': result[0]['tripname'], 'tripdate': result[0]['tripdate'], 'startmileage': result[0]['startmileage'], 'endmileage': result[0]['endmileage'], 'costpermile': result[0]['costpermile'], 'reimbursement': result[0]['reimbursement']}]
     return jsonify(result) 
 
 # Update route
 @app.route("/trips/<int:trip_id>", methods=["PUT"])
 def update_trip(trip_id):
     data = request.get_json()
-    query = "UPDATE trip SET tripname = %s, tripdate = %s, startmileage = %s, endmileage = %s, costpermile = %s WHERE id= %s;" 
-    run_query(query, [data["tripname"], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"], trip_id])
+    query = "UPDATE trip SET tripname = %s, tripdate = %s, startmileage = %s, endmileage = %s, costpermile = %s, reimbursement =%s WHERE id= %s;" 
+    run_query(query, [data["tripname"], data["tripdate"], data["startmileage"], data["endmileage"], data["costpermile"], data["reimbursement"], trip_id])
     return jsonify({"message": "Trip updated successfully"})
 
 # DELETE ROUTE
