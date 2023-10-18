@@ -3,8 +3,8 @@
 - **Project Name:** Mileage Tracker
 - **Project By:** Adrian Garcia
 - [**Link To  Frontend GITHUB**](https://github.com/adriancgarcia/mileagetracker)
-- [**LINK TO DEPLOYED WEBSITE**]()
-- **List of technologies used** Python, Javascript
+- [**LINK TO DEPLOYED WEBSITE**](https://gentle-fairy-943b44.netlify.app/)
+- **List of technologies used** Python, Flask, Javascript
 - [**Link to Trello**]()
 
 ## Description
