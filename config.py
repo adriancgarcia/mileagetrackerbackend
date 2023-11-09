@@ -7,7 +7,7 @@ if DATABASE_URI.startswith("postgres://"):
 class Config(object):
     DEBUG = False
     TESTING = False 
-    CSRNF_ENABLED = True
+    CSRF_ENABLED = True
     SECRET_KEY = config("SECRET_KEY", default="GUESS-ME")
     SQLALCHEMY_DATABASE_URI = DATABASE_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -15,6 +15,12 @@ class Config(object):
     WTF_CSRF_ENABLED = True
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
+
+class DevelopmentConfiguration(Config):
+    DEVELOPMENT = True
+    DEBUG = True
+    WTF_CSRF_ENABLED = False
+    DEBUG_TB_ENABLED = True
 
 class TestingConfig(Config):
     TESTING = True
